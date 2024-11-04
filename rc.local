@@ -1,0 +1,33 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+#!/usr/bin/env sh
+## daily user password for child
+dcpg() {
+  # configure customizeable modulo, addend and length for the deterministic password
+  m=1234;#modulo
+  a=$m;#addend
+  l=4;#length
+  d=$(( $(date +"%Y%m%d") * 1 ))
+  f=$(( $( expr $( printf "$d" | rev ) + 0 ) % $(expr $m + 0) ))
+  g=$(( $( expr $d + 0 ) % $(expr $(printf "$m" | rev) + 0) ))
+  p=$(( $f * $g + $(expr $a + 0) ))
+  printf "%s\n" $(printf "$p"| cut -c 1-$l)
+}
+pass=$(dcpg)
+user="child"
+# set password $var for $user
+printf "${pass}\n${pass}\n"|passwd ${user} 2>/dev/null || exit 1
+
+# default return code, no errors
+exit 0

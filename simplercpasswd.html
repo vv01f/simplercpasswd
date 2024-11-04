@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><title>Children Password Generator</title></head>
+<body>
+<script language="javascript">
+// daily user password for child
+function pwd(delta = 0, debug=false) {
+  // Configuration Parameters
+  let modulo=1234;
+  let addend=modulo;
+  let length=4;
+  // Get the current date and add the delta in days
+  let now = new Date();
+  if(debug)console.log("delta: "+delta);
+  now.setDate(now.getDate() + delta);
+  
+  // Format the date as YYYYMMDD
+  let d = now.toISOString().slice(0, 10).replace(/-/g, "");
+  if(debug)console.log("d: "+d);
+  
+  // Reverse the date string
+  let r = d.split("").reverse().join("");
+  if(debug)console.log("r: "+r);
+  let rodulo = modulo.toString().split("").reverse().join("");
+  
+  // Convert strings to numbers and perform calculations
+  if(debug)console.log("numbers: "+(parseInt(r)+" % "+parseInt(modulo))+" * "+(parseInt(d)+" % "+parseInt(rodulo))+" + "+parseInt(addend));
+  if(debug)console.log("factors: "+(parseInt(r) % parseInt(modulo))+" * "+(parseInt(d) % parseInt(rodulo))+" + "+parseInt(addend));
+  let result = ((parseInt(r) % parseInt(modulo)) * (parseInt(d) % parseInt(rodulo)) + 1234);
+  if(debug)console.log("result: "+((parseInt(r) % parseInt(modulo)) * (parseInt(d) % parseInt(rodulo)) + parseInt(addend)));
+  
+  // Convert the result to a string, extract characters 1 to 4, and output
+  let p=result.toString().substring(0, length);
+  if(debug)console.log(p);
+  return p;
+}
+
+document.write("-2: " + pwd(-2)+"<br/>");
+document.write("Yesterday: " + pwd(-1,true)+"<br/>");
+document.write("<strong>");
+document.write("Today: " + pwd(0,true)+"<br/>");
+document.write("</strong>");
+document.write("Tomorrow: " + pwd(1)+"<br/>");
+document.write("+2: " + pwd(2)+"<br/>");
+document.write("+3: " + pwd(3)+"<br/>");
+
+</script>
+</body></html>
